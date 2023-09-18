@@ -25,44 +25,44 @@
 export function calcTileType(index, boardSize) {
   // TODO: ваш код будет тут
   if (index < boardSize - 1 && index > 0) {
-    return "top";
+    return 'top';
   }
   if (index < boardSize ** 2 - 1 && index > boardSize ** 2 - boardSize) {
-    return "bottom";
+    return 'bottom';
   }
   for (let i = 1; i < boardSize - 1; i += 1) {
     if (index === boardSize * i) {
-      return "left";
+      return 'left';
     }
     if (index === boardSize * i + (boardSize - 1)) {
-      return "right";
+      return 'right';
     }
   }
 
   switch (index) {
     case 0:
-      return "top-left";
+      return 'top-left';
     case boardSize - 1:
-      return "top-right";
+      return 'top-right';
     case boardSize * (boardSize - 1):
-      return "bottom-left";
+      return 'bottom-left';
     case boardSize ** 2 - 1:
-      return "bottom-right";
+      return 'bottom-right';
     default:
-      return "center";
+      return 'center';
   }
 }
 
 export function calcHealthLevel(health) {
   if (health < 15) {
-    return "critical";
+    return 'critical';
   }
 
   if (health < 50) {
-    return "normal";
+    return 'normal';
   }
 
-  return "high";
+  return 'high';
 }
 
 export function restoreCharacters(characters, restoreFn) {

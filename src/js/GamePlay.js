@@ -1,4 +1,4 @@
-import { calcHealthLevel, calcTileType } from "./utils";
+import { calcHealthLevel, calcTileType } from './utils';
 
 export default class GamePlay {
   constructor() {
@@ -19,16 +19,16 @@ export default class GamePlay {
 
   bindToDOM(container) {
     if (!(container instanceof HTMLElement)) {
-      throw new Error("container is not HTMLElement");
+      throw new Error('container is not HTMLElement');
     }
     this.container = container;
   }
 
   initModalListener() {
-    document.addEventListener("click", (e) => {
+    document.addEventListener('click', (e) => {
       if (
-        e.target.dataset.handler === "modalHandlerCancel" &&
-        this.currentModal
+        e.target.dataset.handler === 'modalHandlerCancel'
+        && this.currentModal
       ) {
         this.currentModal.hide();
         this.isModal = false;
@@ -55,32 +55,26 @@ export default class GamePlay {
       </div>
     `;
 
-    this.newGameEl = this.container.querySelector("[data-id=action-restart]");
-    this.saveGameEl = this.container.querySelector("[data-id=action-save]");
-    this.loadGameEl = this.container.querySelector("[data-id=action-load]");
+    this.newGameEl = this.container.querySelector('[data-id=action-restart]');
+    this.saveGameEl = this.container.querySelector('[data-id=action-save]');
+    this.loadGameEl = this.container.querySelector('[data-id=action-load]');
 
-    this.newGameEl.addEventListener("click", (event) =>
-      this.onNewGameClick(event)
-    );
-    this.saveGameEl.addEventListener("click", (event) =>
-      this.onSaveGameClick(event)
-    );
-    this.loadGameEl.addEventListener("click", (event) =>
-      this.onLoadGameClick(event)
-    );
+    this.newGameEl.addEventListener('click', (event) => this.onNewGameClick(event));
+    this.saveGameEl.addEventListener('click', (event) => this.onSaveGameClick(event));
+    this.loadGameEl.addEventListener('click', (event) => this.onLoadGameClick(event));
 
-    this.boardEl = this.container.querySelector("[data-id=board]");
+    this.boardEl = this.container.querySelector('[data-id=board]');
     this.boardEl.classList.add(theme);
     for (let i = 0; i < this.boardSize ** 2; i += 1) {
-      const cellEl = document.createElement("div");
+      const cellEl = document.createElement('div');
       cellEl.classList.add(
-        "cell",
-        "map-tile",
-        `map-tile-${calcTileType(i, this.boardSize)}`
+        'cell',
+        'map-tile',
+        `map-tile-${calcTileType(i, this.boardSize)}`,
       );
-      cellEl.addEventListener("mouseenter", (event) => this.onCellEnter(event));
-      cellEl.addEventListener("mouseleave", (event) => this.onCellLeave(event));
-      cellEl.addEventListener("click", (event) => this.onCellClick(event));
+      cellEl.addEventListener('mouseenter', (event) => this.onCellEnter(event));
+      cellEl.addEventListener('mouseleave', (event) => this.onCellLeave(event));
+      cellEl.addEventListener('click', (event) => this.onCellClick(event));
       this.boardEl.appendChild(cellEl);
     }
 
@@ -94,45 +88,27 @@ export default class GamePlay {
    */
   redrawPositions(positions) {
     for (const cell of this.cells) {
-      cell.innerHTML = "";
+      cell.innerHTML = '';
     }
 
     for (const position of positions) {
       const cellEl = this.boardEl.children[position.position];
-      const charEl = document.createElement("div");
-      charEl.classList.add("character", position.character.type);
+      const charEl = document.createElement('div');
+      charEl.classList.add('character', position.character.type);
 
-      const healthEl = document.createElement("div");
-      healthEl.classList.add("health-level");
+      const healthEl = document.createElement('div');
+      healthEl.classList.add('health-level');
 
-      const healthIndicatorEl = document.createElement("div");
+      const healthIndicatorEl = document.createElement('div');
       healthIndicatorEl.classList.add(
-        "health-level-indicator",
-        `health-level-indicator-${calcHealthLevel(position.character.health)}`
+        'health-level-indicator',
+        `health-level-indicator-${calcHealthLevel(position.character.health)}`,
       );
       healthIndicatorEl.style.width = `${position.character.health}%`;
       healthEl.appendChild(healthIndicatorEl);
       charEl.appendChild(healthEl);
       cellEl.appendChild(charEl);
     }
-  }
-
-  showModal(message, unicode) {
-    const modal = new ModalPopup({
-      title: message,
-      content: `&#${unicode}`,
-      footerButtons: [
-        {
-          class: "btn btn__cancel",
-          text: "Close",
-          handler: "modalHandlerCancel",
-        },
-      ],
-    });
-
-    this.currentModal = modal;
-
-    modal.show();
   }
 
   /**
@@ -223,9 +199,9 @@ export default class GamePlay {
     }
   }
 
-  selectCell(index, color = "yellow") {
+  selectCell(index, color = 'yellow') {
     this.deselectCell(index);
-    this.cells[index].classList.add("selected", `selected-${color}`);
+    this.cells[index].classList.add('selected', `selected-${color}`);
   }
 
   deselectCell(index) {
@@ -233,7 +209,7 @@ export default class GamePlay {
 
     if (cell) {
       cell.classList.remove(
-        ...Array.from(cell.classList).filter((o) => o.startsWith("selected"))
+        ...Array.from(cell.classList).filter((o) => o.startsWith('selected')),
       );
     }
   }
@@ -243,18 +219,18 @@ export default class GamePlay {
   }
 
   hideCellTooltip(index) {
-    this.cells[index].title = "";
+    this.cells[index].title = '';
   }
 
   showDamage(index, damage) {
     return new Promise((resolve) => {
       const cell = this.cells[index];
-      const damageEl = document.createElement("span");
-      damageEl.className = "damage";
+      const damageEl = document.createElement('span');
+      damageEl.className = 'damage';
       damageEl.textContent = damage;
       cell.appendChild(damageEl);
 
-      damageEl.addEventListener("animationend", () => {
+      damageEl.addEventListener('animationend', () => {
         cell.removeChild(damageEl);
         resolve(true);
       });
@@ -267,7 +243,7 @@ export default class GamePlay {
 
   checkBinding() {
     if (this.container === null) {
-      throw new Error("GamePlay not bind to DOM");
+      throw new Error('GamePlay not bind to DOM');
     }
   }
 }
